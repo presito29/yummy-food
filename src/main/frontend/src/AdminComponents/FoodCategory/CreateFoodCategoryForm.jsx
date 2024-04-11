@@ -4,9 +4,14 @@ import axios from 'axios';
 
 const CreateFoodCategoryForm = () => {
     const [formData, setFormData] = useState({ name: "" });
+    const [error, setError] = useState(""); // State for error message
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.name.trim()) {
+            setError("Category name is required"); // Set error message if name is empty
+            return;
+        }
         try {
             const response = await axios.post("/api/api/admin/category/create", formData, {
                 headers: {
@@ -15,6 +20,8 @@ const CreateFoodCategoryForm = () => {
             });
             console.log("Category created:", response.data);
             // Handle success, reset form, show success message, etc.
+            setFormData({ name: "" }); // Reset form after successful submission
+            setError(""); // Reset error message
         } catch (error) {
             console.error("Error creating category:", error);
             // Handle error, show error message, etc.
@@ -27,6 +34,7 @@ const CreateFoodCategoryForm = () => {
             ...formData,
             [name]: value
         });
+        setError(""); // Reset error message when user starts typing
     };
 
     return (
@@ -37,11 +45,13 @@ const CreateFoodCategoryForm = () => {
                     <TextField
                         fullWidth
                         id="name"
-                        name="name" // Corrected name attribute
+                        name="name"
                         label="Име на категорията"
                         variant="outlined"
                         onChange={handleInputChange}
-                        value={formData.name} // Corrected value attribute
+                        value={formData.name}
+                        error={!!error} // Set error state for TextField
+                        helperText={error} // Display error message
                     />
                     <Button variant="contained" type="submit">
                         Добави категория

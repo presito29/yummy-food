@@ -1,66 +1,91 @@
 import React, { useState, useEffect } from 'react';
 import addImg from '../../images/table.png';
-import axios from "axios";
+import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function AddTable() {
     const [capacity, setCapacity] = useState("");
     const [smokerOrNo, setSmokerOrNo] = useState("");
     const [inside_outside, setInside_outside] = useState("");
+    const [capacityError, setCapacityError] = useState("");
+    const [smokerOrNoError, setSmokerOrNoError] = useState("");
+    const [insideOutsideError, setInsideOutsideError] = useState("");
     const navigate = useNavigate();
     const { id } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
-          if (id) {
-            try {
-              const response = await axios.get(`/api/table/${id}`);
-              setCapacity(response.data.capacity);
-              setSmokerOrNo(response.data.smokerOrNo);
-              setInside_outside(response.data.inside_outside);
-            } catch (error) {
-                alert(error);
+            if (id) {
+                try {
+                    const response = await axios.get(`/api/table/${id}`);
+                    setCapacity(response.data.capacity);
+                    setSmokerOrNo(response.data.smokerOrNo);
+                    setInside_outside(response.data.inside_outside);
+                } catch (error) {
+                    alert(error);
+                }
             }
-          }
         };
         fetchData();
-      }, [id]);
+    }, [id]);
 
     async function save(event) {
         event.preventDefault();
-        try {
-            let responseData;
-            if (id) {
-                responseData = await axios.put(`/api/table/${id}`, {
-                    capacity: capacity,
-                    smokerOrNo: smokerOrNo,
-                    inside_outside: inside_outside
-                });
-              } else {
-                responseData =  await axios.post("/api/table/save", {
-                    capacity: capacity,
-                    smokerOrNo: smokerOrNo,
-                    inside_outside: inside_outside
-                });
-              }
-           
-            navigate("/");
-            
-        } catch (err) {
-            alert(err);
+        console.log(smokerOrNo);
+        console.log(inside_outside);
+
+        // Validation
+        let valid = true;
+
+        if (!capacity) {
+            setCapacityError("Capacity is required");
+            valid = false;
+        } else {
+            setCapacityError("");
+        }
+
+        if (smokerOrNo === '') {
+            setSmokerOrNoError("Please select an option");
+            valid = false;
+        } else {
+            setSmokerOrNoError("");
+        }
+
+        if (inside_outside === '') {
+            setInsideOutsideError("Please select an option");
+            valid = false;
+        } else {
+            setInsideOutsideError("");
+        }
+
+        if (valid) {
+            try {
+                let responseData;
+                if (id) {
+                    responseData = await axios.put(`/api/table/${id}`, {
+                        capacity: capacity,
+                        smokerOrNo: smokerOrNo,
+                        inside_outside: inside_outside
+                    });
+                } else {
+                    responseData = await axios.post("/api/table/save", {
+                        capacity: capacity,
+                        smokerOrNo: smokerOrNo,
+                        inside_outside: inside_outside
+                    });
+                }
+
+                navigate("/");
+
+            } catch (err) {
+                alert(err);
+            }
         }
     }
 
-    function pageTitle(){
-        if(id){
-          return <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">UPDATE TABLE</p>
-        }else{
-          return <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">ADD TABLE</p>
-    
-        }
-    
-      }
-    
+    function pageTitle() {
+        return id ? <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">UPDATE TABLE</p> : <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">ADD TABLE</p>;
+    }
 
     return (
         <section className="bg-orange-200 min-h-screen flex items-center justify-center">
@@ -70,8 +95,8 @@ function AddTable() {
                 </div>
 
                 <div className=" md:w-1/2 h-1/2 mt-4 md:mt-0 md:ml-6">
-                {pageTitle()}
-        <br />
+                    {pageTitle()}
+                    <br />
                     <form className="mx-1 mx-md-4 lg:flex lg:flex-col">
 
                         <div className="m-2 max-w-full">
@@ -83,9 +108,14 @@ function AddTable() {
                                     placeholder="Capacity"
                                     className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                                     value={capacity}
-                                    onChange={(event) => setCapacity(event.target.value)}
+                                    onChange={(event) => {
+                                        setCapacity(event.target.value);
+                                        setCapacityError('');
+                                    }}
                                 />
                             </div>
+                            {capacityError && <span className="text-red-500">{capacityError}</span>}
+
                         </div>
 
                         <div className="m-2 max-w-full">
@@ -96,13 +126,15 @@ function AddTable() {
                                     onChange={(event) => setSmokerOrNo(event.target.value)}
                                     className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                                     id="smokerOrNo"
-                                    name="smokerOrNo">
-                                                                            <option value="---">---</option>
- 
+                                    name="smokerOrNo"
+                                >
+                                    <option value="---">---</option>
                                     <option value="smoker">smoker</option>
                                     <option value="non-Smoker">non-smoker</option>
                                 </select>
                             </div>
+                            {smokerOrNoError && <span className="text-red-500">{smokerOrNoError}</span>}
+
                         </div>
 
                         <div className="m-2 max-w-full">
@@ -113,13 +145,15 @@ function AddTable() {
                                     name="inside_outside"
                                     className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                                     value={inside_outside}
-                                    onChange={(event) => setInside_outside(event.target.value)}>
-                                         <option value="---">---</option>
-
+                                    onChange={(event) => setInside_outside(event.target.value)}
+                                >
+                                    <option value="---">---</option>
                                     <option value="inside">inside</option>
                                     <option value="outside">outside</option>
                                 </select>
                             </div>
+                            {insideOutsideError && <span className="text-red-500">{insideOutsideError}</span>}
+
                         </div>
 
                         <div className="flex justify-center m-15">
@@ -129,7 +163,7 @@ function AddTable() {
                                 className="bg-red-700 text-white px-6 py-3 rounded-full hover:bg-red-800 focus:outline-none text-base"
                                 onClick={save}
                             >
-                                 {id ? 'Update Table' : 'Add Table'}
+                                {id ? 'Update Table' : 'Add Table'}
                             </button>
                         </div>
                     </form>

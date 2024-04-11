@@ -19,6 +19,9 @@ const Navbar = () => {
   const handleMenuClick = () =>{
     navigate("/menu")
   }
+  const handleSearchClick = () =>{
+    navigate("/search")
+  }
   const handleAvatarClick = () =>{
     if(auth.user.role==="USER"){
       navigate("/my-profile")
@@ -36,7 +39,7 @@ const Navbar = () => {
       </div>
       <div className='flex items-center space-x-2 lg:space-x-10'>
         <div className=''>
-          <IconButton>
+          <IconButton onClick={handleSearchClick}>
             <SearchIcon sx={{fontSize: "1.5rem"}}/>
           </IconButton>
         </div>
