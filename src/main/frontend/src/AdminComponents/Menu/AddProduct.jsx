@@ -16,9 +16,14 @@ function AddProduct() {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(undefined);
 
+  const [nameError, setNameError] = useState('');
+  const [priceError, setPriceError] = useState('');
+  const [categoryError, setCategoryError] = useState('');
+  const [capacityError, setCapacityError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
-
       if (id) {
         try {
           const response = await axios.get(`/api/product/${id}`);
@@ -38,12 +43,36 @@ function AddProduct() {
 
   const handleSave = async (event) => {
     event.preventDefault();
-    console.log(jwt)
+    // Validation
+    let isValid = true;
+    if (!name.trim()) {
+      setNameError('Name is required');
+      isValid = false;
+    }
+    if (!price.trim()) {
+      setPriceError('Price is required');
+      isValid = false;
+    }
+    if (!category.trim()) {
+      setCategoryError('Category is required');
+      isValid = false;
+    }
+    if (!capacity.trim()) {
+      setCapacityError('Capacity is required');
+      isValid = false;
+    }
+    if (!description.trim()) {
+      setDescriptionError('Description is required');
+      isValid = false;
+    }
+    if (!isValid) {
+      return;
+    }
     try {
       let responseData;
       const config = {
         headers: {
-          Authorization: `Bearer ${jwt}` // Include JWT token in request headers
+          Authorization: `Bearer ${jwt}`
         }
       };
   
@@ -73,7 +102,7 @@ function AddProduct() {
         await axios.put('/api/api/admin/photo', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${jwt}` // Include JWT token in request headers for photo upload
+            Authorization: `Bearer ${jwt}`
           },
         });
       }
@@ -85,7 +114,6 @@ function AddProduct() {
       alert('Failed to save product');
     }
   };
-  
 
   function pageTitle() {
     return id ? (
@@ -125,9 +153,14 @@ function AddProduct() {
                   placeholder="Name"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={name}
-                  onChange={(event) => setName(event.target.value)}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                    setNameError('');
+                  }}
                 />
               </div>
+              {nameError && <span className="text-red-500">{nameError}</span>}
+
             </div>
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
@@ -140,9 +173,14 @@ function AddProduct() {
                   placeholder="Price"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={price}
-                  onChange={(event) => setPrice(event.target.value)}
+                  onChange={(event) => {
+                    setPrice(event.target.value);
+                    setPriceError('');
+                  }}
                 />
               </div>
+              {priceError && <span className="text-red-500">{priceError}</span>}
+
             </div>
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
@@ -155,9 +193,14 @@ function AddProduct() {
                   placeholder="Category"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={category}
-                  onChange={(event) => setCategory(event.target.value)}
+                  onChange={(event) => {
+                    setCategory(event.target.value);
+                    setCategoryError('');
+                  }}
                 />
+                
               </div>
+              {categoryError && <span className="text-red-500">{categoryError}</span>}
             </div>
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
@@ -170,9 +213,14 @@ function AddProduct() {
                   placeholder="Capacity"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={capacity}
-                  onChange={(event) => setCapacity(event.target.value)}
+                  onChange={(event) => {
+                    setCapacity(event.target.value);
+                    setCapacityError('');
+                  }}
                 />
               </div>
+              {capacityError && <span className="text-red-500">{capacityError}</span>}
+
             </div>
             <div className="m-2 max-w-full">
               <div className="flex items-center m-3">
@@ -183,9 +231,14 @@ function AddProduct() {
                   placeholder="Description"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={description}
-                  onChange={(event) => setDescription(event.target.value)}
+                  onChange={(event) => {
+                    setDescription(event.target.value);
+                    setDescriptionError('');
+                  }}
                 />
+               
               </div>
+              {descriptionError && <span className="text-red-500">{descriptionError}</span>}
             </div>
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
