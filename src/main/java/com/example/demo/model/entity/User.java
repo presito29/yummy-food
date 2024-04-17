@@ -39,6 +39,8 @@ public class User extends  BaseEntity{
 
     private RoleEnums role = RoleEnums.USER;
 
+    private boolean isEnabled;
+
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 

@@ -50,6 +50,10 @@ public class AuthController {
 
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
     }
+    @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<?> confirmUserAccount(@RequestParam("token")String confirmationToken) {
+        return userService.confirmEmail(confirmationToken);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> singIn(@RequestBody LoginRequest request){

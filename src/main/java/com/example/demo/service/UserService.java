@@ -2,13 +2,17 @@ package com.example.demo.service;
 
 import com.example.demo.config.JwtProvider;
 import com.example.demo.model.entity.Cart;
+import com.example.demo.model.entity.ConfirmationToken;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.enums.RoleEnums;
 import com.example.demo.repository.CartRepository;
+import com.example.demo.repository.ConfirmationTokenRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.response.AuthResponse;
 import com.example.demo.response.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,14 +37,17 @@ public class UserService {
     private final CartRepository cartRepository;
     private final EmailService emailService;
 
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+
    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider, CustomerUserDetailsService customerUserDetailsService, CartRepository cartRepository, EmailService emailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider, CustomerUserDetailsService customerUserDetailsService, CartRepository cartRepository, EmailService emailService, ConfirmationTokenRepository confirmationTokenRepository) {
         this.userRepository = userRepository;
        this.jwtProvider = jwtProvider;
        this.customerUserDetailsService = customerUserDetailsService;
        this.cartRepository = cartRepository;
        this.passwordEncoder = passwordEncoder;
        this.emailService = emailService;
+       this.confirmationTokenRepository = confirmationTokenRepository;
    }
 
     public User createUser(User user) throws Exception {
@@ -63,8 +70,22 @@ public class UserService {
 
         Cart cart = new Cart();
         cart.setUser(savedUser);
-        emailService.sendVerificationEmail(user.getEmail(), "verification");
+
         cartRepository.save(cart);
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(savedUser);
+
+        confirmationTokenRepository.save(confirmationToken);
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(user.getEmail());
+        mailMessage.setSubject("Complete Registration!");
+        mailMessage.setText("To confirm your account, please click here : "
+                +"http://localhost:8080/confirm-account?token="+confirmationToken.getConfirmationToken());
+        emailService.sendEmail(mailMessage);
+
+        System.out.println("Confirmation Token: " + confirmationToken.getConfirmationToken());
+
         return savedUser;
     }
 
@@ -125,4 +146,17 @@ public class UserService {
 
     public User findUserById(Long id) {
        return userRepository.findById(id).orElseThrow();}
+
+    public ResponseEntity<?> confirmEmail(String confirmationToken) {
+        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+
+        if(token != null)
+        {
+            User user = userRepository.findByEmailIgnoreCase(token.getUser().getEmail());
+            user.setEnabled(true);
+            userRepository.save(user);
+            return ResponseEntity.ok("Email verified successfully!");
+        }
+        return ResponseEntity.badRequest().body("Error: Couldn't verify email");
+    }
 }
