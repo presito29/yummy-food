@@ -1,25 +1,27 @@
-import { Button, Card } from "@mui/material";
 import React from "react";
-import homeImg2 from '../../images/home2.jpg';
+import { Button, Card } from "@mui/material";
 
-
-
-const OrderCard = () =>{
-
-    return(
+const OrderCard = ({ item, order }) => {
+    return (
         <Card className="flex justify-between items-center p-5">
             <div className="flex items-center space-x-5">
-                <img className = "h-16 w-16" src={homeImg2} alt="" />
+                <img className="h-16 w-16" src={item.product.imagePath} alt="" />
             </div>
             <div>
-                <p>Nesto</p>
-                <p>Cenata </p>
+                <p>{item.product.name}</p>
+                <p>{item.product.price}</p> {/* Not sure what data you want to display here */}
             </div>
             <div>
-                <Button variant="contained" sx={{margin: "2rem 0rem", backgroundColor: "#FF5733" }} className="cursor-not-allowed"> Completed</Button>
+                <Button
+                    variant="contained"
+                    sx={{ margin: "2rem 0rem", backgroundColor: "#FF5733" }}
+                    className="cursor-not-allowed"
+                >
+                    {order.status}
+                </Button>
             </div>
         </Card>
-    )
-}
+    );
+};
 
-export default OrderCard
+export default OrderCard;

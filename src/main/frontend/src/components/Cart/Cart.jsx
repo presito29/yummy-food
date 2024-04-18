@@ -7,6 +7,8 @@ import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { useDispatch, useSelector } from "react-redux"
 import { ErrorMessage, Field, Formik, Form } from "formik";
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import { createOrder } from "../State/Order/Action";
+import { useNavigate } from "react-router-dom";
 
 //import * as Yup from "yup"
 
@@ -23,8 +25,7 @@ export const style = {
   };
   const initialValues={
     streetAddress: "",
-    state: "",
-    city: ""
+    number: ""
   }
 
 //   const validationSchema = Yup.object.shape(
@@ -37,7 +38,6 @@ export const style = {
 //   )
 
   
-const items= [1,1]
 const Cart = () => {
     
     const createOrderUsingSelectedAddress = () => {
@@ -46,7 +46,21 @@ const Cart = () => {
     const handleOpedAddressModal = () => setOpen(true);
       const [open, setOpen] = useState(false);
       const handleClose = () => setOpen(false);
+      const dispatch = useDispatch();
+      const navigate = useNavigate()
       const handleSubmit = (values) => {
+        const data = {
+        jwt: localStorage.getItem("jwt"),
+        order: {
+          address:{
+            street: values.streetAddress,
+            number: values.number
+          }
+
+        }
+        }
+        dispatch(createOrder(data))
+        navigate("/")
         console.log("form value", values)
       }
       const {cart} = useSelector(store => store)
@@ -121,16 +135,9 @@ onSubmit={handleSubmit}>
 />
 
 </Grid>
-<Grid item xs={12}>
-<Field as={TextField} name="state" label ="Държава" fullWidth variant="outlined" 
-//error={!ErrorMessage("streerAddress")} helperText={<ErrorMessage>
- //   {(msg) => <span className="text-red-600">{msg}</span>}
-//</ErrorMessage>}
-/>
 
-</Grid>
 <Grid item xs={12}>
-<Field as={TextField} name="city" label ="Град" fullWidth variant="outlined" 
+<Field as={TextField} name="number" label ="Номер на улицата" fullWidth variant="outlined" 
 //error={!ErrorMessage("streerAddress")} helperText={<ErrorMessage>
   //  {(msg) => <span className="text-red-600">{msg}</span>}
 //</ErrorMessage>}

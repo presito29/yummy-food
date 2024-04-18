@@ -2,11 +2,13 @@ package com.example.demo.service;
 
 
 import com.example.demo.model.entity.*;
+import com.example.demo.model.view.OrderViewModel;
 import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.response.OrderRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -49,23 +52,21 @@ public class OrderService {
 
        Cart cart = cartService.findCartByUserId(user.getId());
        List<OrderItem> orderItems = new ArrayList<>();
+        createOrder.setAmount(cartService.calculateCartTotalPrice(cart));
+        orderRepository.save(createOrder);
 
        for (CartItem cartItem: cart.getItems()){
            OrderItem orderItem = new OrderItem();
            orderItem.setProduct(cartItem.getProduct());
            orderItem.setQuantity(cartItem.getQuantity());
            orderItem.setTotalPrice(cartItem.getTotalPrice());
-
+           orderItem.setOrder(createOrder);
 
            OrderItem savedOrderItem = orderItemRepository.save(orderItem);
            orderItems.add(savedOrderItem);
        }
 
-       createOrder.setOrderItems(orderItems);
-       createOrder.setAmount(cartService.calculateCartTotalPrice(cart));
 
-      // Order savedOrder = orderRepository.save(createOrder);
-        orderRepository.save(createOrder);
 
         return createOrder;
     }
@@ -92,8 +93,21 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
-    public List<Order> getUsersOrder(Long userId) throws Exception{
-        return orderRepository.findByUserId(userId);
+    @Transactional
+    public List<OrderViewModel> getUsersOrder(Long userId) throws Exception{
+        List<Order> orders = orderRepository.findByUserId(userId);
+
+        return orders.stream()
+                .map(order -> OrderViewModel.builder()
+                        .id(order.getId())
+                        .orderedTime(order.getOrderedTime())
+                        .amount(order.getAmount())
+                        .status(order.getStatus())
+                        .deliveryAddress(order.getDeliveryAddress())
+                        .user(order.getUser())
+                        .products(order.getProducts()) // Assuming you have getter method getOrderItems() in Order entity
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public List<Order> getOrderByStatus(String status) throws Exception{

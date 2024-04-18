@@ -1,5 +1,6 @@
 package com.example.demo.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 @Builder
 @Entity
 @Table(name = "order_items")
+@JsonIgnoreProperties("order")
 public class OrderItem extends BaseEntity {
 
     @ManyToOne

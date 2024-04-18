@@ -47,6 +47,6 @@ public class User extends  BaseEntity{
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Address> addresses;
 }

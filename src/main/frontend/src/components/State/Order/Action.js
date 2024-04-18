@@ -9,6 +9,7 @@ export const createOrder = (reqData) => {
         try{
             const res = await api.post(`${API_URL}/api/order`, reqData.order,{
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${reqData.jwt}`,
                 },
             });
@@ -28,7 +29,7 @@ export const getUserOrder = (jwt) => {
         try{
             const res = await api.get(`${API_URL}/api/order/user`,{
                 headers: {
-                    Authorization: `Bearer ${reqData.jwt}`,
+                    Authorization: `Bearer ${jwt}`,
                 },
             });
             console.log("user order", res.data);

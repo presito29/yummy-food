@@ -63,13 +63,19 @@ public class CartService {
         if (cartItem.isEmpty()){
             throw new Exception("cart item not found");
         }
+        System.out.println(quantity + "Quantity");
         CartItem item = cartItem.get();
         item.setQuantity(quantity);
         BigDecimal totalPrice = new BigDecimal(quantity).multiply(item.getProduct().getPrice());
         item.setTotalPrice(totalPrice);
         CartItem newItem = cartItemRepository.save(item);
-        cart.setTotal(calculateCartTotalPrice(cart));
-        cartRepository.save(cart);
+        Cart cart1 =  cartRepository.save(cart);
+
+
+        BigDecimal newPrice = calculateCartTotalPrice(cart1);
+        cart1.setTotal(newPrice);
+        cartRepository.save(cart1);
+
         return newItem;
     }
 
@@ -78,9 +84,16 @@ public class CartService {
         for (CartItem cartItem : cart.getItems()) {
             totalPrice = totalPrice.add(cartItem.getTotalPrice());
         }
+
         return totalPrice;
     }
-
+    public BigDecimal calculateCartTotalPrice1(Optional<CartItem> cart) {
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        for (CartItem cartItem : cart.orElseThrow().getCart().getItems()) {
+            totalPrice = totalPrice.add(cartItem.getTotalPrice());
+        }
+        return totalPrice;
+    }
     public CartItem removeCartItem(Long cartItemId, String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
         Cart cart = cartRepository.findByUserId(user.getId());
@@ -92,8 +105,9 @@ public class CartService {
         CartItem cartItem = cartItemOptional.get();
 
         cart.getItems().remove(cartItem);
-        Cart saved = cartRepository.save(cart);;
-        BigDecimal totalPrice = calculateCartTotalPrice(saved);
+        Cart saved = cartRepository.save(cart);
+        Optional<CartItem> cartItemOptional1 = cartItemRepository.findById(cartItemId);
+        BigDecimal totalPrice = calculateCartTotalPrice1(cartItemOptional1);
         cart.setTotal(totalPrice);
         cartRepository.save(cart);
 
