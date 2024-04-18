@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.config.JwtProvider;
 import com.example.demo.model.entity.User;
-import com.example.demo.response.AuthResponse;
-import com.example.demo.response.LoginRequest;
+import com.example.demo.request_response.AuthResponse;
+import com.example.demo.request_response.LoginRequest;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

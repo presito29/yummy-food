@@ -26,7 +26,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String jwt = request.getHeader(JwtConstant.JWT_HEADER);
-// bearer token
+        // bearer token
         if (jwt != null){
             jwt = jwt.substring(7);
 

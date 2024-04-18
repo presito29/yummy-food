@@ -1,4 +1,4 @@
-package com.example.demo.response;
+package com.example.demo.request_response;
 
 import com.example.demo.model.enums.RoleEnums;
 import lombok.Data;

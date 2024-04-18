@@ -6,7 +6,7 @@ import com.example.demo.model.entity.Product;
 import com.example.demo.model.entity.User;
 import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.CartRepository;
-import com.example.demo.response.AddCartItemRequest;
+import com.example.demo.request_response.AddCartItemRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

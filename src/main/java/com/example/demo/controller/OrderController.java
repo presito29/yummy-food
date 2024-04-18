@@ -4,7 +4,7 @@ import com.example.demo.model.entity.Cart;
 import com.example.demo.model.entity.Order;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.view.OrderViewModel;
-import com.example.demo.response.OrderRequest;
+import com.example.demo.request_response.OrderRequest;
 import com.example.demo.service.CartService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;

@@ -30,6 +30,5 @@ public class OrderViewModel {
 
     private User user;
 
-
     private List<OrderItem> products;
 }
