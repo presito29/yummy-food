@@ -17,7 +17,7 @@ const Orders = () => {
 
     return (
         <div className="flex flex-col justify-center items-center text-center">
-            <h1 className="text-xl text-center py-7 font-semibold">MY ORDERS</h1>
+            <h1 className="text-xl text-center py-7 font-semibold">Моите поръчки</h1>
             <div className="space-y-5 w-full lg:w-1/2">
                 {order.orders &&
                     Array.isArray(order.orders) &&

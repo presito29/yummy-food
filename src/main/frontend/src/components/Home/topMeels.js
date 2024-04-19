@@ -12,31 +12,31 @@ import essp from '../../images/essp.png';
 export const topMeel = [
     {
         image: pizza,
-        title: "Pizza"
+        title: "Пица"
     },
     {
         image: burger,
-        title: "Burger"
+        title: "Бургер"
     },
     {
         image: cake,
-        title: "Cake"
+        title: "Торта"
     },
     {
         image: salad,
-        title: "Salad"
+        title: "Салата"
     },
     {
         image: soup,
-        title: "Soup"
+        title: "Супа"
     },
     {
         image: essp,
-        title: "Essspreso"
+        title: "Експресо"
     },
     {
         image: sushi,
-        title: "Sishi"
+        title: "Суши"
     },
 
 ]

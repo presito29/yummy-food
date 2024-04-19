@@ -45,7 +45,7 @@ const Navbar = () => {
         </div>
         <div className=''>
           <IconButton onClick={handleMenuClick}>
-            <MenuBookIcon sx={{fontSize: "1.5rem"}}/> Menu
+            <MenuBookIcon sx={{fontSize: "1.5rem"}}/> Меню
           </IconButton>
         </div>
         <div className=''>

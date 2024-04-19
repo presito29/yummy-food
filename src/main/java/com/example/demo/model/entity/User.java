@@ -15,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@JsonIgnoreProperties( ignoreUnknown = true, value = {"orders", "reservations", "addresses"})
+@JsonIgnoreProperties( ignoreUnknown = true, value = {"orders", "reservations"})
 @Table(name="users")
+@Entity
 public class User extends  BaseEntity{
 
 
@@ -47,6 +47,4 @@ public class User extends  BaseEntity{
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Address> addresses;
 }

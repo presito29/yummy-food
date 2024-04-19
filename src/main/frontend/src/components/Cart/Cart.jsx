@@ -9,6 +9,7 @@ import { ErrorMessage, Field, Formik, Form } from "formik";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { createOrder } from "../State/Order/Action";
 import { useNavigate } from "react-router-dom";
+import { clearCartAction } from "../State/Cart/Action";
 
 //import * as Yup from "yup"
 
@@ -28,21 +29,10 @@ export const style = {
     number: ""
   }
 
-//   const validationSchema = Yup.object.shape(
-//     {
-//         streetAddress:Yup.string().required("Името на улицата се изисква"),
-//         state:Yup.string().required("Името на държавата се изисква"),
-//         city:Yup.string().required("Името на града се изисква")
-
-//     }
-//   )
-
   
 const Cart = () => {
     
-    const createOrderUsingSelectedAddress = () => {
-
-    }
+    const {cart} = useSelector(store => store)
     const handleOpedAddressModal = () => setOpen(true);
       const [open, setOpen] = useState(false);
       const handleClose = () => setOpen(false);
@@ -60,10 +50,11 @@ const Cart = () => {
         }
         }
         dispatch(createOrder(data))
+        dispatch(clearCartAction())
         navigate("/")
         console.log("form value", values)
       }
-      const {cart} = useSelector(store => store)
+      
 
     
     return(
@@ -93,24 +84,19 @@ const Cart = () => {
                 </div>
                 </section>
                 <Divider orientation="vertical" flexItem/>
-                <section className="lg:w-[70%] flex justify-center px-5 pb-10 lg:pb-0">
-                    <div>
-                        <h1 className="text-center font-semibold text-2x1 py-10 ">Избери адрес</h1>
-                        <div className="flex gap-5 flex-wrap justify-center">
-                            {[1,1,1,1].map((item) => <AddressCard handleSelectAddress={createOrderUsingSelectedAddress} item={{item}} showButton={true}/>)}
-                            <div className="flex justify-center items-center h-screen p-10">
-      <Card className="p-7">
-        <div className="flex items-center">
-          <AddLocationAltIcon className="text-4xl mr-2" />
-          <h1 className="font-semibold text-lg text-black">Добави нов адрес</h1>
-        </div>
-        <Button variant="outlined" fullWidth onClick={handleOpedAddressModal}>
-          Добави адрес
-        </Button>
-      </Card>
-    </div>
-                        </div>
-                    </div>
+                <section className="lg:w-[70%] flex justify-center px-5 pb-10 lg:pb-0 m-7">
+                   
+                <Card className="p-4 h-32">
+  <div className="flex items-center p-3">
+    <AddLocationAltIcon className="text-4xl mr-2" />
+    <h1 className="font-semibold text-lg text-black">Добави нов адрес</h1>
+  </div>
+  <Button variant="outlined" fullWidth onClick={handleOpedAddressModal}>
+    Добави адрес
+  </Button>
+</Card>
+
+   
                 </section>
             </main>
             <Modal

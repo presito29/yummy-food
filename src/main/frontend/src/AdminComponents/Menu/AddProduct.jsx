@@ -57,7 +57,7 @@ function AddProduct() {
       setCategoryError('Category is required');
       isValid = false;
     }
-    if (!capacity.trim()) {
+    if (!capacity) {
       setCapacityError('Capacity is required');
       isValid = false;
     }

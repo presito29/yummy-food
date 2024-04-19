@@ -10,7 +10,7 @@ import { getMenuItems } from '../State/Menu/Action';
 
 
 const Menu = () => {
-    const [foodType, setFoodType] = useState("");
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
@@ -34,7 +34,7 @@ const Menu = () => {
         dispatch(getMenuItems({jwt, category: selectedCategory}))
 
     },[selectedCategory])
-    const menu1 = [1,1,1,1,1];
+
   return (
     <section className='pt-[2rem] lg: flex relative bg-orange-200'>
         <div className='space-y-10 m-6 lg:w-[20%] filter p-5 shadow-md'>

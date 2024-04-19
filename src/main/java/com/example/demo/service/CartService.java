@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -129,10 +130,22 @@ public class CartService {
       return cartRepository.findByUserId(userId);
     }
 
-    public Cart clearCart(Long userId) throws Exception{
-
+    public Cart clearCart(Long userId) throws Exception {
         Cart cart = findCartByUserId(userId);
+
         cart.getItems().clear();
+
+
+        List<CartItem> items = cartItemRepository.findCartItemByCart(cart);
+
+        // Delete each cart item
+        for (CartItem item : items) {
+            cartItemRepository.delete(item);
+            System.out.println(item + "Item after clear");
+        }
+
+        cart.setTotal(null);
         return cartRepository.save(cart);
     }
+
 }

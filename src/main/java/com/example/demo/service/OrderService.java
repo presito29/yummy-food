@@ -39,14 +39,11 @@ public class OrderService {
     public Order createOrder(OrderRequest orderRequest, User user) throws Exception {
         Address shippAddress = orderRequest.getAddress();
         Address savedAddress = addressRepository.save(shippAddress);
-        if (!user.getAddresses().contains(savedAddress)){
-            user.getAddresses().add(savedAddress);
-            userRepository.save(user);
-        }
+
        Order createOrder = new Order();
        createOrder.setUser(user);
        createOrder.setOrderedTime(LocalDateTime.now());
-       createOrder.setStatus("PENDING");
+       createOrder.setStatus("Очакване");
        createOrder.setDeliveryAddress(savedAddress);
 
        Cart cart = cartService.findCartByUserId(user.getId());
@@ -79,7 +76,7 @@ public class OrderService {
     public Order updateOrder(Long orderId, String orderStatus) throws Exception{
         Order order = findOrderById(orderId);
 
-        if (orderStatus.equals("OUT_FOR_DELIVERY") || orderStatus.equals("DELIVERED") || orderStatus.equals("COMPLETED") || orderStatus.equals("PENDING")){
+        if (orderStatus.equals("Доставена") || orderStatus.equals("Завършена") || orderStatus.equals("Очакване")){
             order.setStatus(orderStatus);
             return orderRepository.save(order);
         }
