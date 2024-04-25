@@ -62,9 +62,9 @@ const Navbar = () => {
           </IconButton>
         </div>
         <div className=''>
-         {auth.user ? (
+        {(auth.user && auth.user.enabled) ? ( // Check if user exists and email is confirmed
             <Avatar onClick={handleAvatarClick} sx={{bgcolor:"white", color: "black"}}>
-              {auth.user?.firstName[0].toUpperCase()}
+              {auth.user.firstName[0].toUpperCase()}
             </Avatar>
           ) : (
             <IconButton onClick={() => navigate("/account/login")}>

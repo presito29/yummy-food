@@ -81,7 +81,8 @@ public class UserService {
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setText("To confirm your account, please click here : "
-                +"http://localhost:8080/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
+                +"http://localhost:3000/account/login?token="+confirmationToken.getConfirmationToken());
+
         emailService.sendEmail(mailMessage);
 
         System.out.println("Confirmation Token: " + confirmationToken.getConfirmationToken());
@@ -102,10 +103,12 @@ public class UserService {
 
         String jwt = jwtProvider.generateToken(authentication);
 
+        User user = userRepository.findByEmail(email);
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwt(jwt);
         authResponse.setMessage("Login success");
         authResponse.setRole(RoleEnums.valueOf(role));
+        authResponse.setEnabled(user.isEnabled());
 
         return authResponse;
     }

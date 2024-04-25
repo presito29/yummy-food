@@ -22,7 +22,9 @@ const ProfileNavigation = ({ open, handleClose }) => {
 
     const handleNavigation = (item) => {
         if (item.title === "Изход") {
+            navigate("/")
             dispatcher(logout());
+           
         } else {
             navigate(`/my-profile${item.path}`);
         }

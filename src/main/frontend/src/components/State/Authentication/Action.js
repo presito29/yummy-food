@@ -7,7 +7,7 @@ export const registerUser = (reqData) => async(dispatch) =>{
     try{
 
         const {data} = await axios.post(`${API_URL}/auth/signup`, reqData.userData)
-        alert("Моля, влезте във вашиа имейл и потвърдете самоличността си!/nДокато не потвърдите няма да бъдете")
+        alert("Моля, влезте във вашия имейл и потвърдете самоличността си! Докато не потвърдите няма да бъдете допуснати до сайта!")
         reqData.navigate("/account/login")
         dispatch({type: REGISTER_SUCCESS, payload: data.jwt })
         console.log("refister", data)
@@ -18,27 +18,31 @@ export const registerUser = (reqData) => async(dispatch) =>{
 }
 
 
-export const loginUser = (reqData) => async(dispatch) =>{
-    dispatch({type: LOGIN_REQUEST})
-    try{
+export const loginUser = (reqData) => async (dispatch) => {
+    dispatch({ type: LOGIN_REQUEST });
+    try {
+        const { data } = await axios.post(`${API_URL}/auth/login`, reqData.userData);
 
-        const {data} = await axios.post(`${API_URL}/auth/login`, reqData.userData)
-
-        if(data.jwt)localStorage.setItem("jwt", data.jwt);
-        if(data.role==="USER"){
-            reqData.navigate("/")
-        } else{
-            reqData.navigate("/admin/")
+         if (!data.enabled) {
+          alert("Влезте във вашия имейл и потвърдете самоличността си!");
+            
+        } else {
+                 if (data.jwt) localStorage.setItem("jwt", data.jwt);
+            if (data.role === "USER") {
+                reqData.navigate("/");
+            } else {
+                reqData.navigate("/admin/");
+            }
         }
 
-        dispatch({type: LOGIN_SUCCESS, payload: data.jwt })
-        console.log("login", data)
-    }catch(error){
-        dispatch({type: LOGIN_FAILURE, payload: error})
-        console.log("error", error)
-
+        dispatch({ type: LOGIN_SUCCESS, payload: data.jwt });
+        console.log("login", data);
+    } catch (error) {
+        dispatch({ type: LOGIN_FAILURE, payload: error });
+        console.log("error", error);
     }
-}
+};
+
 
 export const getUser = (jwt) => async(dispatch) =>{
     dispatch({type: GET_USER_REQUEST})

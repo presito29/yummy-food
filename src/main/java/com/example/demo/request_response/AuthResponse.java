@@ -11,4 +11,6 @@ public class AuthResponse {
     private String message;
 
     private RoleEnums role;
+
+    private boolean enabled;
 }
