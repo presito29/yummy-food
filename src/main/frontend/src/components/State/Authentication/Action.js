@@ -7,13 +7,8 @@ export const registerUser = (reqData) => async(dispatch) =>{
     try{
 
         const {data} = await axios.post(`${API_URL}/auth/signup`, reqData.userData)
-
-        if(data.jwt)localStorage.setItem("jwt", data.jwt);
-        if(data.role==="USER"){
-            reqData.navigate("/")
-        }
-       
-
+        alert("Моля, влезте във вашиа имейл и потвърдете самоличността си!/nДокато не потвърдите няма да бъдете")
+        reqData.navigate("/account/login")
         dispatch({type: REGISTER_SUCCESS, payload: data.jwt })
         console.log("refister", data)
     }catch(error){

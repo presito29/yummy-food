@@ -44,13 +44,13 @@ public class AdminOrderController {
     }
 
     @GetMapping("/ordersByStatus")
-    public ResponseEntity<List<Order>> getByStatus(@PathVariable String orderStatus,
-            @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<List<Order>> getByStatus(@RequestParam("orderStatus") String orderStatus,
+                                                   @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
         List<Order> order = orderService.getOrderByStatus(orderStatus);
         return new ResponseEntity<>(order, HttpStatus.OK);
-
     }
+
 
     @PutMapping("/order/{orderId}/{orderStatus}")
     public ResponseEntity<Order> updateOrderStatus(

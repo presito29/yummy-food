@@ -1,15 +1,14 @@
 
-import React from "react";
+import React, {useEffect} from "react";
 import cake from '../../images/cake.jpg';
 import { Chip, IconButton } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeCartItem, updateCartItem } from "../State/Cart/Action";
+import { findCart, removeCartItem, updateCartItem } from "../State/Cart/Action";
 
 const CartItem = ({item}) => {
-    const {auth, cart} = useSelector(store => store)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
@@ -24,8 +23,10 @@ const CartItem = ({item}) => {
     }
 
     const handleRemoveCartItem = () =>{
-       dispatch(removeCartItem({cartItemId: item.id, jwt: jwt })) 
-    }
+        dispatch(removeCartItem({cartItemId: item.id, jwt: jwt })) 
+        location.reload();
+
+     }
 
     return(
         <div className="px-5 ">

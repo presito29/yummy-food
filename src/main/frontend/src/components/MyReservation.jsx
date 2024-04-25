@@ -5,8 +5,7 @@ import { Delete } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const orders = [1,1,1,1,1]
-export const ReservationTable = () => {
+export const MyReservation = () => {
   const navigate = useNavigate();
   const [reservations, setReservations] = useState([]);
   
@@ -22,7 +21,7 @@ export const ReservationTable = () => {
   const loadReservations = async () => {
     try {
       console.log(jwt);
-      const response = await axios.get("/api/api/admin/reservation/all", {
+      const response = await axios.get("http://localhost:8080/my-reservation", {
         headers: {
           Authorization: `Bearer ${jwt}` 
         }
@@ -36,24 +35,16 @@ export const ReservationTable = () => {
 
     return(
         <Box>
-            <Card sx={{backgroundColor: '#FED7AA'}} className="mt-2">
-                <CardHeader title={"All Reservation"} sx={{pt:2, alignItems:"center"}}/>
-                {
-          <IconButton onClick={() => navigate("/admin/all-table")} aria-label="settings">
-            <CreateIcon /> <p>Всички маси</p>
-          </IconButton>
-        }
-            </Card>
+            
             <TableContainer >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="right">Номер на маса</TableCell>
-            <TableCell align="right">Резервирал</TableCell>
             <TableCell align="right">Пушач или не</TableCell>
             <TableCell align="right">Вън или вътре</TableCell>
             <TableCell align="right">Дата</TableCell>
-            <TableCell align="right">час</TableCell>
+            <TableCell align="right">Час</TableCell>
 
           </TableRow>
         </TableHead>
@@ -73,7 +64,6 @@ export const ReservationTable = () => {
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
       <TableCell align="right">{row.table.id}</TableCell>
-      <TableCell align="right">{row.user.email}</TableCell>
       <TableCell align="right">{row.table.smokerOrNo ? 'smoker' : 'non smoker'}</TableCell>
       <TableCell align="right">{row.table.inside_outside}</TableCell>
       <TableCell align="right">{new Date(row.reservationDate).toLocaleDateString()}</TableCell>

@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import UserProfile from "./UserProfile";
 import Orders from "./Orders";
 import Reservation from "../Reservation";
+import { MyReservation } from "../MyReservation";
 
 
 const Profile = () => {
@@ -22,7 +23,8 @@ const Profile = () => {
                 <Routes>
                     <Route path="/" element={<UserProfile />} />
                     <Route path="/поръчки" element={<Orders />} />
-                    <Route path="/резервации" element={<Reservation />} />
+                    <Route path="/направи-резервацая" element={<Reservation />} />
+                    <Route path="/моите-резервации" element={<MyReservation />} />
                 </Routes>
             </div>
         </div>

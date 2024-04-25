@@ -9,9 +9,10 @@ import { useDispatch } from "react-redux";
 import { logout } from "../State/Authentication/Action";
 
 const menu = [
-    { title: "Резервации", icon: <TableRestaurantIcon /> },
-    { title: "Поръчки", icon: <ShoppingBagIcon /> },
-    { title: "Изход", icon: <LogoutIcon /> },
+    { title: "Направи резерцация", icon: <TableRestaurantIcon />, path: "/направи-резервацая" },
+    { title: "Моите резерцации", icon: <TableRestaurantIcon />, path: "/моите-резервации" },
+    { title: "Поръчки", icon: <ShoppingBagIcon />, path: "/поръчки" },
+    { title: "Изход", icon: <LogoutIcon />, path: "/logout" },
 ];
 
 const ProfileNavigation = ({ open, handleClose }) => {
@@ -23,7 +24,7 @@ const ProfileNavigation = ({ open, handleClose }) => {
         if (item.title === "Изход") {
             dispatcher(logout());
         } else {
-            navigate(`/my-profile/${item.title.toLowerCase()}`, { replace: true });
+            navigate(`/my-profile${item.path}`);
         }
     };
 

@@ -14,7 +14,7 @@ export const Dashboard = () => {
 
   const loadUser = async () => {
     try {
-      const response = await axios.get("/api/users/profile", {
+      const response = await axios.get("/api/api/users/profile", {
         headers: {
           Authorization: `Bearer ${jwt}` 
         }

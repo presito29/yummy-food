@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"
 import { store } from '../State/store';
 import { getCategoryAction } from '../State/Category/Action';
-import { getMenuItems } from '../State/Menu/Action';
+import { getAllMenuItems, getMenuItems } from '../State/Menu/Action';
 
 
 
@@ -30,9 +30,12 @@ const Menu = () => {
     },[])
 
     useEffect(() =>{
-      
+        console.log(selectedCategory);
+      if(selectedCategory != ""){
         dispatch(getMenuItems({jwt, category: selectedCategory}))
-
+      }else{
+       dispatch(getAllMenuItems({jwt}))
+      }
     },[selectedCategory])
 
   return (

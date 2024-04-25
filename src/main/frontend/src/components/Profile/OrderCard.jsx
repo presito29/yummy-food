@@ -9,7 +9,7 @@ const OrderCard = ({ item, order }) => {
             </div>
             <div>
                 <p>{item.product.name}</p>
-                <p>{item.product.price}</p> {/* Not sure what data you want to display here */}
+                <p>{item.product.price} лв.</p> {/* Not sure what data you want to display here */}
             </div>
             <div>
                 <Button

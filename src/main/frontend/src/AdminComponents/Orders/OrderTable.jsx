@@ -1,49 +1,121 @@
-import { Box, Card, CardHeader, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import React from "react";
-import { Orders } from "./Orders";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOrders, updateOrderStatus } from "../../components/State/Order_Admin/Action";
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  FormControl,
+  InputLabel,
+  Menu,
+  MenuItem,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
+} from "@mui/material";
 
-const orders = [1,1,1,1,1]
-export const OrderTable = () => {
-    return(
-        <Box>
-            <Card sx={{backgroundColor: '#FED7AA'}} className="mt-2">
-                <CardHeader title={"All Orders"} sx={{pt:2, alignItems:"center"}}/>
+const orderStatus = [
+  {label: "Очакване", value: "Очакване"},
+  {label: "Завършена", value: "Завършена"},
+  {label: "Доставена", value: "Доставена"}
+]
+
+const OrderTable = () => {
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
+  const { orderAdmin } = useSelector(store => store);
+  const [selectedStatus, setSelectedStatus] = useState('');
+
+  
 
 
-            </Card>
-            <TableContainer >
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>id</TableCell>
-            <TableCell align="right">Image</TableCell>
-            <TableCell align="right">Customer</TableCell>
-            <TableCell align="right">Price</TableCell>
-            <TableCell align="right">Name</TableCell>
-           < TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {orders.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {1}
-              </TableCell>
-              <TableCell align="right">{"nz"}</TableCell>
-              <TableCell align="right">{"nz"}</TableCell>
-              <TableCell align="right">{"nz"}</TableCell>
-              <TableCell align="right">{"nz"}</TableCell>
-              <TableCell align="right">{"nz"}</TableCell>
+  useEffect(() => {
+    
+    dispatch(fetchOrders(jwt));
+    
+    console.log(orderAdmin, "Console")
+  }, []);
 
-              
+  
+
+  const handleChange = (orderId, event) => {
+    setSelectedStatus(event.target.value);
+    console.log(orderId)
+    const jwt = localStorage.getItem("jwt");
+    dispatch(updateOrderStatus({ orderId, orderStatus: event.target.value, jwt }));
+  };
+  return (
+    <Box sx={{ backgroundColor: '#FED7AA' }}>
+      <Card sx={{ backgroundColor: '#FED7AA' }} className="mt-2">
+        <CardHeader title={"Всички поръчки"} sx={{ pt: 2, alignItems: "center" }} />
+      </Card>
+      <TableContainer>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>id</TableCell>
+              <TableCell align="center">Снимка</TableCell>
+              <TableCell align="center">Собственик</TableCell>
+              <TableCell align="center">Цена</TableCell>
+              <TableCell align="center">Име на продукта</TableCell>
+              <TableCell align="center">Статус на поръчката</TableCell>
+              <TableCell align="center">Актуализация на статуса</TableCell>
+
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-        </Box>
-    )
-}
+          </TableHead>
+          <TableBody>
+            {orderAdmin.orders.map(row => (
+
+              <TableRow key={row.id}>
+                <TableCell component="th" scope="row">
+                  {row.id}
+                </TableCell>
+                <TableCell align="center">
+                  <AvatarGroup>
+                    {row.products.map(item => (
+                      <Avatar key={item.id} src={item.product.imagePath} />
+                    ))}
+                  </AvatarGroup>
+                </TableCell>
+                <TableCell align="center">{row.user.email}</TableCell>
+                <TableCell align="center">{row.amount}</TableCell>
+                <TableCell align="center">{row.products.map(item => (
+                      <p>{item.product.name}</p>
+                    ))}</TableCell>
+                <TableCell align="center">{row.status}</TableCell>
+                <TableCell align="center">
+                <FormControl fullWidth>
+      <InputLabel id="demo-simple-select-label">Status</InputLabel>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={selectedStatus}
+        label="Status"
+        onChange={(event) => handleChange(row.id, event)}
+      >
+        {orderStatus.map((status, index) => (
+          <MenuItem key={index} value={status.value}>
+            {status.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+                </TableCell>
+                
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+};
+
+export default OrderTable;

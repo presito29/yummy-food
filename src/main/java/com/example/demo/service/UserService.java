@@ -81,13 +81,14 @@ public class UserService {
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setText("To confirm your account, please click here : "
-                +"http://localhost:8080/confirm-account?token="+confirmationToken.getConfirmationToken());
+                +"http://localhost:8080/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
         emailService.sendEmail(mailMessage);
 
         System.out.println("Confirmation Token: " + confirmationToken.getConfirmationToken());
 
         return savedUser;
     }
+
 
     public AuthResponse login(LoginRequest request){
 

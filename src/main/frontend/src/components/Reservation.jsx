@@ -4,6 +4,8 @@ import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faClock } from '@fortawesome/free-solid-svg-icons';
 
+
+
 function Reservation() {
   const [reservationDate, setReservationDate] = useState('');
   const [reservationTime, setReservationTime] = useState('');
@@ -18,12 +20,17 @@ function Reservation() {
     try {
         // Изпраща POST заявка към сървъра
         const response = await axios.post("http://localhost:8080/reservation", {
-            reservationDate: reservationDate,
-            reservationTime: reservationTime,
-            capacity: capacity,
-            smokerOrNo: smokerOrNo,
-            inside_outside: inside_outside
-        });
+    reservationDate: reservationDate,
+    reservationTime: reservationTime,
+    capacity: capacity,
+    smokerOrNo: smokerOrNo,
+    inside_outside: inside_outside
+}, {
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`
+    }
+});
+
 
         // Ако заявката е успешна (HTTP статус 200-299), извежда съобщение за успешно регистриране на резервацията
         if (response.status >= 200 && response.status < 300) {
@@ -39,8 +46,12 @@ function Reservation() {
 }
 
   return (
+    
+    
     <section className="bg-orange-200 min-h-screen flex items-center justify-center">
+      
       <div className="bg-white shadow-lg rounded-lg p-8 m-11 md:flex">
+        
         <div className="md:w-1/2 h-1/2 md:flex-auto md:flex-shrink-0 ">
           <img src={resImg} alt="Sample image" className="rounded-2xl w-full md:h-50 mt-12" />
         </div>
@@ -148,6 +159,8 @@ function Reservation() {
         </div>
       </div>
     </section>
+
+    
   );
 }
 

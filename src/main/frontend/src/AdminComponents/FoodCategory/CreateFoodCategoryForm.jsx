@@ -1,9 +1,11 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const CreateFoodCategoryForm = () => {
     const [formData, setFormData] = useState({ name: "" });
+    const navigate = useNavigate();
     const [error, setError] = useState(""); // State for error message
 
     const handleSubmit = async (e) => {
@@ -20,8 +22,14 @@ const CreateFoodCategoryForm = () => {
             });
             console.log("Category created:", response.data);
             // Handle success, reset form, show success message, etc.
+            navigate("/admin/category")
             setFormData({ name: "" }); // Reset form after successful submission
             setError(""); // Reset error message
+
+            // Fetch the latest category list after creating a new category
+            // You can emit an event or call a function to update the category list in the parent component
+            // For simplicity, let's assume there's a global function to fetch categories
+            fetchCategories();
         } catch (error) {
             console.error("Error creating category:", error);
             // Handle error, show error message, etc.

@@ -12,12 +12,12 @@ import { logout } from "../../components/State/Authentication/Action";
 import TableBarIcon from '@mui/icons-material/TableBar';
 
 const menu = [
-    { title: "Dashboard", icon: <Dashboard />, path: "/" },
-    { title: "Orders", icon: <ShoppingBag />, path: "/orders" },
-    { title: "Menu", icon: <ShopTwoIcon />, path: "/menu" },
-    { title: "Food Category", icon: <FastfoodIcon />, path: "/category" },
-    { title: "Reservation", icon: <TableBarIcon />, path: "/reservation" },
-    { title: "Logout", icon: <LogoutIcon />, path: "/logout" }, // Assuming there's a logout path
+    { title: "Приветстваща страница", icon: <Dashboard />, path: "/" },
+    { title: "Поръчки", icon: <ShoppingBag />, path: "/orders" },
+    { title: "Меню", icon: <ShopTwoIcon />, path: "/menu" },
+    { title: "Категории на храна", icon: <FastfoodIcon />, path: "/category" },
+    { title: "Резервации", icon: <TableBarIcon />, path: "/reservation" },
+    { title: "Изход", icon: <LogoutIcon />, path: "/logout" }, // Assuming there's a logout path
 ];
 
 export const AdminSideBar = ({handleClose}) => {

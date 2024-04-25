@@ -18,15 +18,17 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final TableRepository tableRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, TableRepository tableRepository, UserRepository userRepository) {
+    public ReservationService(ReservationRepository reservationRepository, TableRepository tableRepository, UserRepository userRepository, UserService userService) {
         this.reservationRepository = reservationRepository;
         this.tableRepository = tableRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
-    public void reservation(ReservationCreateDto reservationCreateDto, String username) {
+    public void reservation(ReservationCreateDto reservationCreateDto, String jwt) throws Exception {
         String smoker2 = reservationCreateDto.getSmokerOrNo().toLowerCase();
         boolean smoker = (smoker2.equals("smoker") ? true : false);
 
@@ -39,14 +41,14 @@ public class ReservationService {
         );
 
         if (!availableTables.isEmpty()) {
-            System.out.println(username);
+
             RestaurantTable selectedTable = availableTables.get(0);
 
             Reservation reservation = Reservation.builder()
                     .reservationDate(reservationCreateDto.getReservationDate())
                     .reservationTime(reservationCreateDto.getReservationTime())
                     .table(selectedTable)
-                    .user(userRepository.getUserByUsername(username))
+                    .user(userService.findUserByJwtToken(jwt))
                     .build();
 
             reservationRepository.save(reservation);
@@ -61,6 +63,12 @@ public class ReservationService {
     }
         public List<Reservation> getReservations() {
             return reservationRepository.findAll();
+
+
+
+    }
+    public List<Reservation> getReservationsByUser(String jwt) throws Exception {
+        return reservationRepository.findByUser(userService.findUserByJwtToken(jwt));
 
 
 

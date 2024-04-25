@@ -48,6 +48,29 @@ export const getMenuItems = (reqData) =>{
     } ;
 };
 
+export const getAllMenuItems = (reqData) =>{
+    return async (dispatch) => {
+        dispatch({ type: GET_MENU_ITEM_REQUEST });
+        
+        try {
+
+
+            const { data } = await api.get(`${API_URL}/product/all`, {
+                headers: {
+                    Authorization: `Bearer ${reqData.jwt}` // Assuming jwt is the JWT token
+                }
+            });   
+            
+           console.log("menu items", data)
+           dispatch({type: GET_MENU_ITEM_SUCCESS, payload: data })
+        } catch (error) {
+            console.log("catch error", error);
+            dispatch({type: GET_MENU_ITEM_FAILURE, payload: error })
+
+        }
+    } ;
+};
+
 export const searchMenuItems = ({keyword, jwt}) =>{
     return async (dispatch) => {
         dispatch({ type: SEARCH_MENU_ITEM_REQUEST });
