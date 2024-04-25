@@ -15,7 +15,7 @@ export const Admin = () => {
     const handleClose = () => {};
 
     return (
-        <div className="h-full bg-orange-200">
+        <div className="h-full bg-orange-200 h-[100vh]">
             <div className="lg:flex justify-between bg-orange-200 ">
                 <div className="sticky h-[80vh] lg:x-[20%] ">
                     <AdminSideBar handleClose={handleClose} />

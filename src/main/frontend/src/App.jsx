@@ -8,6 +8,7 @@ import { getUser } from './components/State/Authentication/Action';
 import Routers from './components/Rourets/Routers';
 import { findCart } from './components/State/Cart/Action';
 import { fetchOrders } from './components/State/Order_Admin/Action';
+import './App.css'
 
 function App() {
   const dispatch = useDispatch();
