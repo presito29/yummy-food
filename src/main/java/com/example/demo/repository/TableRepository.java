@@ -21,7 +21,7 @@ public interface TableRepository extends JpaRepository<RestaurantTable, Long> {
     @Query("SELECT t " +
             "FROM RestaurantTable t " +
             "LEFT JOIN t.reservations r " +
-            "WHERE t.capacity = :requiredCapacity " +
+            "WHERE t.capacity >= :requiredCapacity " +
             "AND t.inside_outside = :insideOutside " +
             "AND t.smokerOrNo = :smoking " +
             "AND NOT EXISTS (" +

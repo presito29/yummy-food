@@ -53,7 +53,8 @@ public class ReservationService {
 
             reservationRepository.save(reservation);
         } else {
-            System.out.println("not found table for your guz");
+            throw new RuntimeException("No available table found for your reservation.");
+
         }
     }
 

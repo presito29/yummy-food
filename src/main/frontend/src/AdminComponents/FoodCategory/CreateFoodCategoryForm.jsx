@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 const CreateFoodCategoryForm = () => {
     const [formData, setFormData] = useState({ name: "" });
     const navigate = useNavigate();
-    const [error, setError] = useState(""); // State for error message
+    const [error, setError] = useState(""); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.name.trim()) {
-            setError("Category name is required"); // Set error message if name is empty
+            setError("Category name is required"); 
             return;
         }
         try {
@@ -21,18 +21,16 @@ const CreateFoodCategoryForm = () => {
                 }
             });
             console.log("Category created:", response.data);
-            // Handle success, reset form, show success message, etc.
+           
             navigate("/admin/category")
-            setFormData({ name: "" }); // Reset form after successful submission
-            setError(""); // Reset error message
+            setFormData({ name: "" }); 
+            setError(""); 
 
-            // Fetch the latest category list after creating a new category
-            // You can emit an event or call a function to update the category list in the parent component
-            // For simplicity, let's assume there's a global function to fetch categories
+           
             fetchCategories();
         } catch (error) {
             console.error("Error creating category:", error);
-            // Handle error, show error message, etc.
+            
         }
     };
 
@@ -42,7 +40,7 @@ const CreateFoodCategoryForm = () => {
             ...formData,
             [name]: value
         });
-        setError(""); // Reset error message when user starts typing
+        setError(""); 
     };
 
     return (
@@ -58,8 +56,8 @@ const CreateFoodCategoryForm = () => {
                         variant="outlined"
                         onChange={handleInputChange}
                         value={formData.name}
-                        error={!!error} // Set error state for TextField
-                        helperText={error} // Display error message
+                        error={!!error} 
+                        helperText={error} 
                     />
                     <Button variant="contained" type="submit">
                         Добави категория

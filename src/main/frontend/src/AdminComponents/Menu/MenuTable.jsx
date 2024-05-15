@@ -59,22 +59,22 @@ export const MenuTable = () => {
   return (
     <Box>
       <Card sx={{ backgroundColor: '#FED7AA' }} className="mt-2">
-        <CardHeader title={"Menu"} sx={{ pt: 2, alignItems: "center" }} />
+        <CardHeader title={"Меню"} sx={{ pt: 2, alignItems: "center" }} />
         <IconButton onClick={() => navigate("/admin/add-product")} aria-label="settings">
-          <CreateIcon />
+          <CreateIcon /> Добави продукт
         </IconButton>
       </Card>
       <TableContainer>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="right">Image</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Category</TableCell>
-              <TableCell align="right">Description</TableCell>
-              <TableCell align="right">Update</TableCell>
-              <TableCell align="right">Delete</TableCell>
+              <TableCell align="right">Снимка</TableCell>
+              <TableCell align="right">Име</TableCell>
+              <TableCell align="right">Цена</TableCell>
+              <TableCell align="right">Категория</TableCell>
+              <TableCell align="right">Описание</TableCell>
+              <TableCell align="right">Актуализирай</TableCell>
+              <TableCell align="right">Изтрий</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -86,7 +86,7 @@ export const MenuTable = () => {
                 <TableCell align="right">{product.category.name}</TableCell>
                 <TableCell align="right">{product.description}</TableCell>
                 <TableCell align="right">
-                  <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-red active:bg-red-800" onClick={() => updateProduct(product.id)}>Update</button>
+                  <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-red active:bg-red-800" onClick={() => updateProduct(product.id)}>Актуализирай</button>
                 </TableCell>
                 <TableCell align="right"><IconButton onClick={() => deleteProduct(product.id)}><Delete /></IconButton></TableCell>
               </TableRow>

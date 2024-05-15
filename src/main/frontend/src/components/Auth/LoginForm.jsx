@@ -8,8 +8,8 @@ import axios from "axios";
 import { loginUser } from "../State/Authentication/Action";
 
 const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().required("Password is required")
+    email: Yup.string().email("Невалиден имейл").required("Имейлът е задължителен"),
+    password: Yup.string().required("Паролата е задължителна")
 });
 
 const initialValues = {
@@ -22,20 +22,16 @@ export const LoginForm = () => {
     const dispatch = useDispatch();
     const location = useLocation();
 
-   
     const token = new URLSearchParams(location.search).get('token');
 
     useEffect(() => {
         if (token) {
-            
             axios.get(`http://localhost:8080/auth/confirm-account?token=${token}`)
                 .then(response => {
-                    
                     navigate("/account/login");
                 })
                 .catch(error => {
-                    console.error('Error verifying email:', error);
-                    
+                    console.error('Грешка при потвърждаване на имейл:', error);
                 });
         }
     }, [navigate, token]);
@@ -46,14 +42,14 @@ export const LoginForm = () => {
 
     return (
         <div className="">
-            <Typography variant="h5" className="text-center">Login</Typography>
+            <Typography variant="h5" className="text-center">Вход</Typography>
             <Formik onSubmit={handleSubmit} validationSchema={validationSchema} initialValues={initialValues}>
                 <Form>
                     <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
-                    <Field as={TextField} name="email" label="Email" fullWidth variant="outlined" margin="normal" />
+                    <Field as={TextField} name="email" label="Имейл" fullWidth variant="outlined" margin="normal" />
                     <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
-                    <Field as={TextField} name="password" label="Password" fullWidth variant="outlined" margin="normal" type="password" />
-                    <Button sx={{ mt: 2, padding: "1rem" }} fullWidth type="submit" variant="contained">Login</Button>
+                    <Field as={TextField} name="password" label="Парола" fullWidth variant="outlined" margin="normal" type="password" />
+                    <Button sx={{ mt: 2, padding: "1rem" }} fullWidth type="submit" variant="contained">Вход</Button>
                 </Form>
             </Formik>
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>Нямаш акаунт?

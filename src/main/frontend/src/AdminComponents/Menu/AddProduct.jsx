@@ -12,6 +12,7 @@ function AddProduct() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState([]); // State to hold the list of categories
   const [capacity, setCapacity] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(undefined);
@@ -23,6 +24,22 @@ function AddProduct() {
   const [descriptionError, setDescriptionError] = useState('');
 
   useEffect(() => {
+    // Fetch all categories when the component mounts
+    const loadCategories = async () => {
+      try {
+        const response = await axios.get("/api/category/all", {
+          headers: {
+            Authorization: `Bearer ${jwt}` 
+          }
+        });
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    loadCategories();
+
+    // Fetch product details if editing an existing product
     const fetchData = async () => {
       if (id) {
         try {
@@ -39,30 +56,33 @@ function AddProduct() {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, jwt]);
 
   const handleSave = async (event) => {
+    
     event.preventDefault();
-    // Validation
+
+    console.log(price, capacity)
+    
     let isValid = true;
     if (!name.trim()) {
-      setNameError('Name is required');
+      setNameError('Името е задължително');
       isValid = false;
     }
-    if (!price.trim()) {
-      setPriceError('Price is required');
+    if (!String(price).trim()) {
+      setPriceError('Цената е задължителна');
       isValid = false;
     }
     if (!category.trim()) {
-      setCategoryError('Category is required');
+      setCategoryError('Категорията е задължителна');
       isValid = false;
     }
-    if (!capacity) {
-      setCapacityError('Capacity is required');
+    if (!String(capacity).trim()) {
+      setCapacityError('Капацитетът е задължителен');
       isValid = false;
     }
     if (!description.trim()) {
-      setDescriptionError('Description is required');
+      setDescriptionError('Описанието е задължително');
       isValid = false;
     }
     if (!isValid) {
@@ -107,22 +127,22 @@ function AddProduct() {
         });
       }
   
-      alert('Product saved successfully');
+      alert('Продуктът е запазен успешно');
       navigate('/admin/menu');
     } catch (error) {
       console.error('Error saving product:', error);
-      alert('Failed to save product');
+      alert('Неуспешно запазване на продукта');
     }
   };
 
   function pageTitle() {
     return id ? (
       <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">
-        UPDATE PRODUCT
+        АКТУАЛИЗИРАЙ ПРОДУКТ
       </p>
     ) : (
       <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">
-        ADD PRODUCT
+        ДОБАВИ ПРОДУКТ
       </p>
     );
   }
@@ -134,7 +154,7 @@ function AddProduct() {
           <img
             src={addImg}
             alt="Sample image"
-            className="rounded-2xl h-45  my-12 w-full  md:h-50  "
+            className="rounded-2xl h-45 my-12 w-full md:h-50"
           />
         </div>
 
@@ -145,12 +165,12 @@ function AddProduct() {
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
                 <label htmlFor="name" className="sr-only">
-                  Name
+                  Име
                 </label>
                 <input
                   type="text"
                   id="name"
-                  placeholder="Name"
+                  placeholder="Име"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={name}
                   onChange={(event) => {
@@ -165,12 +185,12 @@ function AddProduct() {
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
                 <label htmlFor="price" className="sr-only">
-                  Price
+                  Цена
                 </label>
                 <input
                   type="text"
                   id="price"
-                  placeholder="Price"
+                  placeholder="Цена"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={price}
                   onChange={(event) => {
@@ -185,32 +205,36 @@ function AddProduct() {
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
                 <label htmlFor="category" className="sr-only">
-                  Category
+                  Категория
                 </label>
-                <input
-                  type="text"
+                <select
                   id="category"
-                  placeholder="Category"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={category}
                   onChange={(event) => {
                     setCategory(event.target.value);
                     setCategoryError('');
                   }}
-                />
-                
+                >
+                  <option value="" className='gray-border'>Избери категория</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               {categoryError && <span className="text-red-500">{categoryError}</span>}
             </div>
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
                 <label htmlFor="capacity" className="sr-only">
-                  Capacity
+                  Количество
                 </label>
                 <input
                   type="text"
                   id="capacity"
-                  placeholder="Capacity"
+                  placeholder="Количество"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={capacity}
                   onChange={(event) => {
@@ -225,10 +249,10 @@ function AddProduct() {
             <div className="m-2 max-w-full">
               <div className="flex items-center m-3">
                 <label htmlFor="description" className="sr-only">
-                  Description
+                  Описание
                 </label>
                 <textarea
-                  placeholder="Description"
+                  placeholder="Описание"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                   value={description}
                   onChange={(event) => {
@@ -243,12 +267,12 @@ function AddProduct() {
             <div className="m-2 max-w-full">
               <div className="flex items-center m-4">
                 <label htmlFor="file" className="sr-only">
-                  Upload Image
+                  Доабави снимка
                 </label>
                 <input
                   type="file"
                   id="file"
-                  placeholder="Upload Image"
+                  placeholder="Доабави снимка"
                   className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 
     file:bg-gradient-to-b
     file:from-orange-300
@@ -274,7 +298,7 @@ function AddProduct() {
                 className="bg-red-700 text-white px-6 py-3 rounded-full hover:bg-red-800 focus:outline-none text-base"
                 onClick={handleSave}
               >
-                {id ? 'Update Product' : 'Add Product'}
+                {id ? 'Актуализирай' : 'Добави'}
               </button>
             </div>
           </form>

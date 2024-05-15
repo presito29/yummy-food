@@ -52,7 +52,7 @@ export const FoodCategoryTable = () => {
   return(
     <Box>
       <Card sx={{backgroundColor: '#FED7AA'}} className="mt-2">
-        <CardHeader title={"Food Category"} sx={{pt:2, alignItems:"center"}}/>
+        <CardHeader title={"Категории"} sx={{pt:2, alignItems:"center"}}/>
         <IconButton onClick={handleOpen} aria-label="settings">
           <CreateIcon />
         </IconButton>
@@ -61,7 +61,7 @@ export const FoodCategoryTable = () => {
             <TableHead>
               <TableRow>
                 <TableCell align="right">Id</TableCell>
-                <TableCell align="right">Name</TableCell>
+                <TableCell align="right">Име</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

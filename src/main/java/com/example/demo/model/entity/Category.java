@@ -14,6 +14,5 @@ import lombok.*;
 @Table(name = "category")
 public class Category extends BaseEntity{
 
-
     private String name;
 }

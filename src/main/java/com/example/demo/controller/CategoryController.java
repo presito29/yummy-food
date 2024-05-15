@@ -24,7 +24,7 @@ public class CategoryController {
         this.userService = userService;
     }
     @GetMapping("/all")
-    public List<Category> getAll(@RequestHeader("Authorization") String jwt) throws Exception {
+        public List<Category> getAll(@RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
         return categoryService.getAll();
     }

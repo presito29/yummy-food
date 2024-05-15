@@ -23,7 +23,7 @@ export const loginUser = (reqData) => async (dispatch) => {
     try {
         const { data } = await axios.post(`${API_URL}/auth/login`, reqData.userData);
 
-         if (!data.enabled) {
+         if (data.enabled) {
           alert("Влезте във вашия имейл и потвърдете самоличността си!");
             
         } else {

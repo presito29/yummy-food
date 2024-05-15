@@ -9,6 +9,7 @@ import Footer from "../Footer";
 import { Auth } from "../Auth/Auth";
 import Menu from "../Menu/Menu";
 import SearchPage from "../Home/Search";
+import ContactInfo from "../ContactInfo";
 
 export const CustomerRoute = () => {
     return(
@@ -21,6 +22,7 @@ export const CustomerRoute = () => {
                 <Route path="/menu" element={<Menu/>}/>
                 <Route path="/my-profile/*" element={<Profile/>}/>
                 <Route path="/search" element={<SearchPage/>}/>
+                <Route path="/aboutUs" element={<ContactInfo/>}/>
                 
             </Routes>
             <Auth/>

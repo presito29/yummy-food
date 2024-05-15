@@ -92,7 +92,7 @@ const OrderTable = () => {
                 <TableCell align="center">{row.status}</TableCell>
                 <TableCell align="center">
                 <FormControl fullWidth>
-      <InputLabel id="demo-simple-select-label">Status</InputLabel>
+      <InputLabel id="demo-simple-select-label">Статус</InputLabel>
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"

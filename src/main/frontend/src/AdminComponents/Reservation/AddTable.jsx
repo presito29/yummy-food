@@ -31,28 +31,25 @@ function AddTable() {
 
     async function save(event) {
         event.preventDefault();
-        console.log(smokerOrNo);
-        console.log(inside_outside);
-
-        // Validation
+        
         let valid = true;
 
         if (!capacity) {
-            setCapacityError("Capacity is required");
+            setCapacityError("Капацитетът е задължителен");
             valid = false;
         } else {
             setCapacityError("");
         }
 
         if (smokerOrNo === '') {
-            setSmokerOrNoError("Please select an option");
+            setSmokerOrNoError("Моля, изберете опция");
             valid = false;
         } else {
             setSmokerOrNoError("");
         }
 
         if (inside_outside === '') {
-            setInsideOutsideError("Please select an option");
+            setInsideOutsideError("Моля, изберете опция");
             valid = false;
         } else {
             setInsideOutsideError("");
@@ -75,7 +72,7 @@ function AddTable() {
                     });
                 }
 
-                navigate("/");
+                navigate("/admin/");
 
             } catch (err) {
                 alert(err);
@@ -84,28 +81,28 @@ function AddTable() {
     }
 
     function pageTitle() {
-        return id ? <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">UPDATE TABLE</p> : <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">ADD TABLE</p>;
+        return id ? <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">АКТУАЛИЗИРАЙ МАСА</p> : <p className="text-center text-4xl font-bold mb-5 mx-1 mx-md-4 mt-4">ДОБАВИ МАСА</p>;
     }
 
     return (
         <section className="bg-orange-200 min-h-screen flex items-center justify-center">
             <div className="bg-white shadow-lg rounded-lg p-10 m-10 md:flex">
                 <div className="md:w-1/2 h-1/2 md:flex-auto md:flex-shrink-0 h-max-40 w-max-50 mt-10">
-                    <img src={addImg} alt="Sample image" className=" rounded-2xl h-45  my-12 w-full  md:h-50  " />
+                    <img src={addImg} alt="Sample image" className="rounded-2xl h-45 my-12 w-full md:h-50" />
                 </div>
 
-                <div className=" md:w-1/2 h-1/2 mt-4 md:mt-0 md:ml-6">
+                <div className="md:w-1/2 h-1/2 mt-4 md:mt-0 md:ml-6">
                     {pageTitle()}
                     <br />
                     <form className="mx-1 mx-md-4 lg:flex lg:flex-col">
 
                         <div className="m-2 max-w-full">
                             <div className="flex items-center m-4">
-                                <label htmlFor="capacity" className="sr-only">Capacity</label>
+                                <label htmlFor="capacity" className="sr-only">Капацитет</label>
                                 <input
                                     type="text"
                                     id="capacity"
-                                    placeholder="Capacity"
+                                    placeholder="Капацитет"
                                     className="w-full md:w-2/3 lg:w-full xl:w-full border-b-2 border-gray-300 focus:outline-none focus:border-orange-200"
                                     value={capacity}
                                     onChange={(event) => {
@@ -115,12 +112,11 @@ function AddTable() {
                                 />
                             </div>
                             {capacityError && <span className="text-red-500">{capacityError}</span>}
-
                         </div>
 
                         <div className="m-2 max-w-full">
                             <div className="flex items-center m-4">
-                                <label htmlFor="smokerOrNo"></label>
+                                <label htmlFor="smokerOrNo" className="sr-only">Пушачи/Непушачи</label>
                                 <select
                                     value={smokerOrNo}
                                     onChange={(event) => setSmokerOrNo(event.target.value)}
@@ -129,17 +125,16 @@ function AddTable() {
                                     name="smokerOrNo"
                                 >
                                     <option value="---">---</option>
-                                    <option value="smoker">smoker</option>
-                                    <option value="non-Smoker">non-smoker</option>
+                                    <option value="smoker">Пушачи</option>
+                                    <option value="non-Smoker">Непушачи</option>
                                 </select>
                             </div>
                             {smokerOrNoError && <span className="text-red-500">{smokerOrNoError}</span>}
-
                         </div>
 
                         <div className="m-2 max-w-full">
                             <div className="flex items-center m-4">
-                                <label htmlFor="inside_outside"></label><br />
+                                <label htmlFor="inside_outside" className="sr-only">Вътре/Вън</label>
                                 <select
                                     id="inside_outside"
                                     name="inside_outside"
@@ -148,12 +143,11 @@ function AddTable() {
                                     onChange={(event) => setInside_outside(event.target.value)}
                                 >
                                     <option value="---">---</option>
-                                    <option value="inside">inside</option>
-                                    <option value="outside">outside</option>
+                                    <option value="inside">Вътре</option>
+                                    <option value="outside">Вън</option>
                                 </select>
                             </div>
                             {insideOutsideError && <span className="text-red-500">{insideOutsideError}</span>}
-
                         </div>
 
                         <div className="flex justify-center m-15">
@@ -163,7 +157,7 @@ function AddTable() {
                                 className="bg-red-700 text-white px-6 py-3 rounded-full hover:bg-red-800 focus:outline-none text-base"
                                 onClick={save}
                             >
-                                {id ? 'Update Table' : 'Add Table'}
+                                {id ? 'Актуализирай Маса' : 'Добави Маса'}
                             </button>
                         </div>
                     </form>
